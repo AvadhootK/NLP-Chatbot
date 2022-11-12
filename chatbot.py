@@ -1,23 +1,24 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import tensorflow as tf
+
 # Model building for chatbot (training.py file)
 
 import numpy as np
 import tensorflow as tf
 import random
-
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.optimizers import SGD
 import json
+
 # Chatbot application (chatbot.py file)
 
 import nltk
 from nltk.stem import WordNetLemmatizer
 import pickle
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 lemmatizer = WordNetLemmatizer()
-intents = json.loads(open('intents.json').read())
+intents = json.loads(open('Intent.json').read())
 
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
@@ -26,7 +27,7 @@ model = load_model("chatbotmodel.h5")
 # cleaning sentences
 def clean_up_sentence(sentence):
   sentence_words = nltk.word_tokenize(sentence)
-  sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
+  sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
   return sentence_words
 
 # bag of words

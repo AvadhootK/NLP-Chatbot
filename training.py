@@ -6,17 +6,19 @@ import pickle
 
 import nltk 
 from nltk.stem import WordNetLemmatizer
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+# nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.optimizers import SGD
+from tensorflow import keras
+
+from keras.models import Sequential
+from keras.layers import Dense, Activation, Dropout
+from keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()
 
-intents = json.loads(open('intents.json').read())
+intents = json.loads(open('Intent.json').read())
 
 words = []
 classes = []
@@ -31,7 +33,7 @@ for intent in intents['intents']:
     if intent['tag'] not in classes:
       classes.append(intent['tag'])
 
-words = [lemmatizer.lemmatize(word) for word in words if word not in ignore_letters]
+words = [lemmatizer.lemmatize(word.lower()) for word in words if word not in ignore_letters]
 words = sorted(set(words))
 
 classes = sorted(set(classes))
@@ -61,7 +63,6 @@ train_x = list(training[:,0])
 train_y = list(training[:,1])
 
 model = Sequential()
-
 model.add(Dense(128,input_shape=(len(train_x[0]),),activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(64,activation='relu'))
