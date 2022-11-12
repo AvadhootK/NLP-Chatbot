@@ -1,3 +1,6 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 #importing necessary libraries
 import numpy as np
 import random 
@@ -18,7 +21,7 @@ from keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()
 
-intents = json.loads(open('Intent.json').read())
+intents = json.loads(open('intents.json').read())
 
 words = []
 classes = []

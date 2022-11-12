@@ -18,11 +18,12 @@ import pickle
 from keras.models import load_model
 
 lemmatizer = WordNetLemmatizer()
-intents = json.loads(open('Intent.json').read())
+intents = json.loads(open('intents.json').read())
 
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
 model = load_model("chatbotmodel.h5")
+bot_name = "Dex"
 
 # cleaning sentences
 def clean_up_sentence(sentence):
@@ -61,12 +62,17 @@ def get_response(intents_list, intents_json):
     if i['tag'] == tag:
       result = random.choice(i['responses'])
       break
+    else:
+      result = "I do not understand..."
   return result
 
-print("Go! Bot is running!")
+print("Let's chat! type 'quit' to exit")
 
 while True:
-  message = input("")
+  message = input("You: ")
+  if message == "quit":
+      break
+
   ints = predict_class(message)
   res = get_response(ints, intents)
-  print(res)
+  print(f"{bot_name}: " + res)
